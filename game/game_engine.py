@@ -26,6 +26,12 @@ class GameEngine:
     def evaluate_guess(self, guess):
         """Draws next card and evaluates prediction."""
         self.next_card = self.deck.draw()
+
+        if self.next_card.numeric_rank == self.current_card.numeric_rank:
+            self.status_msg = f"PUSH! {self.next_card.rank_str} vs {self.current_card.rank_str}"
+            self.status_color = (255, 220, 120)
+            self.current_card = self.next_card
+            return
         
         if guess == "HIGHER":
             correct = self.next_card.numeric_rank > self.current_card.numeric_rank
