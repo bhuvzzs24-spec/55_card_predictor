@@ -10,6 +10,8 @@ class GameEngine:
         self.current_card = self.deck.draw()
         self.next_card = None
         self.score = 0
+        self.streak = 0
+        self.streak_multiplier = 1
         self.status_msg = "Will the next card be HIGHER or LOWER?"
         self.status_color = (220, 220, 220)
 
@@ -31,10 +33,14 @@ class GameEngine:
             correct = self.next_card.numeric_rank < self.current_card.numeric_rank
         
         if correct:
-            self.score += 1
-            self.status_msg = f"CORRECT! {self.next_card.rank_str} vs {self.current_card.rank_str}"
+            self.streak += 1
+            self.streak_multiplier = self.streak
+            self.score += self.streak_multiplier
+            self.status_msg = f"CORRECT! +{self.streak_multiplier} pts (streak {self.streak})"
             self.status_color = (80, 220, 80)
         else:
+            self.streak = 0
+            self.streak_multiplier = 1
             self.score = max(0, self.score - 1)
             self.status_msg = f"WRONG! {self.next_card.rank_str} vs {self.current_card.rank_str}"
             self.status_color = (235, 75, 75)
